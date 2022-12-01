@@ -1,22 +1,40 @@
 apiVersion: batch/v1
 kind: Job
-metadata:
-  name: hello
+metadata
+  generation: 1
   labels:
-    applications.argoproj.io/app-name: testapp
+    job-name: hello
+  name: hello
+  namespace: testns1
 spec:
-  schedule: "* * * * *"
-  jobTemplate:
+  backoffLimit: 6
+  completionMode: NonIndexed
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      controller-uid: 49b86c7a-e7e6-4021-a850-f034db35d0ac
+  suspend: true
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        controller-uid: 49b86c7a-e7e6-4021-a850-f034db35d0ac
+        job-name: hello
     spec:
-      template:
-        spec:
-          containers:
-          - name: hello
-            image: busybox:1.28
-            imagePullPolicy: IfNotPresent
-            command:
+      containers:
+        - command:
             - /bin/sh
-            - -c
+            - '-c'
             - date; echo Hello from the Kubernetes cluster
-          restartPolicy: OnFailure
-  suspend: false
+          image: 'busybox:1.28'
+          imagePullPolicy: IfNotPresent
+          name: hello
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
