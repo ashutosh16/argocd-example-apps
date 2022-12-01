@@ -11,15 +11,13 @@ spec:
   completionMode: NonIndexed
   completions: 1
   parallelism: 1
-  selector:
-    matchLabels:
-      controller-uid: 49b86c7a-e7e6-4021-a850-f034db35d0ac
+  
   suspend: true
   template:
     metadata:
       creationTimestamp: null
       labels:
-        controller-uid: 49b86c7a-e7e6-4021-a850-f034db35d0ac
+      
         job-name: hello
     spec:
       containers:
