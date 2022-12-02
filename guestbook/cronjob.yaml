@@ -2,14 +2,17 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: hello
-  labels:
-    applications.argoproj.io/app-name: testapp
 spec:
-  jobTemplate:
+  suspend: true
+  backoffLimit: 3
+  activeDeadlineSeconds: 82800
+  ttlSecondsAfterFinished: 82800
+  template:
+    metadata:
+      annotations:
+        asset: 'xx'
     spec:
-      template:
-        spec:
-          containers:
+      containers:
           - name: hello
             image: busybox:1.28
             imagePullPolicy: IfNotPresent
@@ -17,5 +20,6 @@ spec:
             - /bin/sh
             - -c
             - date; echo Hello from the Kubernetes cluster
-          restartPolicy: OnFailure
-  suspend: true
+        imagePullPolicy: Always
+      restartPolicy: OnFailure
+      
