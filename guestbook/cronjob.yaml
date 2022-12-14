@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: node-app-job
+  namespace: testns1
 spec:
   suspend: true
   template:
